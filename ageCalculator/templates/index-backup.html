@@ -1,0 +1,24 @@
+<html>
+<head>
+<title>Calculate Age</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <br>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <input placeholder="Select date" type="date" name="date" id="birth_date" class="form-control">
+                <label for="example">Select your date of Birth...</label>
+                <i class="fas fa-calendar input-prefix" tabindex=0></i>
+                <br><input id="calculate" type="submit" class="btn btn-default" name="submit" value="Calculate your age">
+                <div id="age_container"><span id="exact_age">{{age}}</span></div>
+            </form> 
+        </div>
+    </div>
+</body>
+</html>
