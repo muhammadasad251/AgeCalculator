@@ -1,0 +1,45 @@
+{% extends 'master.html' %}
+    {% block content %}
+    <!-- START date range calculator content -->
+    <main class="container">
+        <div class="row">
+            <h1 class="display-1 text-center">Weekdays Calculator</h1>
+
+            <!-- START input form -->
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <label for="date-range-start-date">Select a start
+                            date</label>
+                        <input type="date" name="sdate"
+                            id="date-range-start-date" class="form-control">
+                        <i class="fas fa-calendar input-prefix" tabindex=0></i>
+                    </div>
+                    <div class="col-6">
+                        <label for="date-range-end-date">Select an end
+                            date</label>
+                        <input type="date" name="edate" id="date-range-end-date"
+                            class="form-control">
+                        <i class="fas fa-calendar input-prefix" tabindex=0></i>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <input id="calculate" type="submit"
+                        class="btn btn-success mt-3" name="submit"
+                        value="Calculate">
+                </div>
+            </form>
+            <!-- END input form -->
+
+            <!-- START result container -->
+            <div id="age_container" class="p-4 bg-warning text-dark">
+                <p id="exact_age" class="display-6 text-center">{{age}}</p>
+            </div>
+            <!-- END result container -->
+        </div>
+    </main>
+    <!-- END date range calculator content -->
+    {% endblock %}
+
