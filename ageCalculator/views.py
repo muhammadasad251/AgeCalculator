@@ -82,9 +82,49 @@ def weekDays(request):
             today = edate
             today=datetime.strptime(today, '%Y-%m-%d')
             days=working_days=np.busday_count(date_of_birth, edate)
-            return " Your Working days are  : " +str(days) + "  Days"
+            return "Week days are  : " +str(days) + "  Days"
         age=(Calc(date_of_birth,edate))
         context = {
             "age":age
         }
     return render(request, 'weekDays.html',context)
+
+
+def workDays(request):
+    context={}
+    if request.method =="POST":
+        sdate=request.POST['sdate']
+        edate=request.POST['edate']
+        date_start_val = sdate
+        date_end_val = edate  # end date (inclusive)
+
+        date_start = datetime.strptime(date_start_val,'%Y-%m-%d').date()
+        date_end = datetime.strptime(date_end_val,'%Y-%m-%d').date()
+
+        days = {'mon':0,'tue':1,'wed':2,'thu':3,'fri':4,'sat':5,'sun':6}
+
+        total_days = (date_end - date_start).days + 1 
+
+        first_weekday = date_start.weekday()
+        target_weekday = days['tue']   
+
+        if target_weekday == first_weekday:
+            days_before = 0
+        elif target_weekday < first_weekday:
+            days_before = 7 - first_weekday + target_weekday
+        else:
+            days_before = target_weekday - first_weekday
+        
+        weekday_count = total_days - days_before
+        if weekday_count > 0:
+            weekday_count = weekday_count/7 + (weekday_count%7 and 1 or 0)
+        else:
+            weekday_count = 0
+
+        day_count = total_days - weekday_count
+        print(day_count)
+        age=int(day_count)
+        context = {
+            "age":age
+        }
+    return render(request, 'workDays.html',context)

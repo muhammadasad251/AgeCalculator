@@ -5,5 +5,6 @@ urlpatterns =[
     path('', index, name='index'),
     path('index', index, name='index'),
     path('rangeCalculator',rangeCalculator, name='rangeCalculator'),
-    path('weekDays',weekDays, name='weekDays')
+    path('weekDays',weekDays, name='weekDays'),
+    path('workDays',workDays, name='workDays')
 ]
