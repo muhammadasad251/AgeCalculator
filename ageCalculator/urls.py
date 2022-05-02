@@ -6,5 +6,6 @@ urlpatterns =[
     path('index', index, name='index'),
     path('rangeCalculator',rangeCalculator, name='rangeCalculator'),
     path('weekDays',weekDays, name='weekDays'),
-    path('workDays',workDays, name='workDays')
+    path('workDays',workDays, name='workDays'),
+    path('calculateWages',calculateWages, name='calculateWages')
 ]
