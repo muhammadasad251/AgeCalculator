@@ -9,20 +9,34 @@
             <form method="post" class="mt-4">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-3">
                         <label for="date-range-start-date">Select a start
                             date</label>
                         <input type="date" name="sdate"
                             id="date-range-start-date" class="form-control">
                         <i class="fas fa-calendar input-prefix" tabindex=0></i>
                     </div>
-                    <div class="col-6">
+                    <div class="col-3">
                         <label for="date-range-end-date">Select an end
                             date</label>
                         <input type="date" name="edate" id="date-range-end-date"
                             class="form-control">
                         <i class="fas fa-calendar input-prefix" tabindex=0></i>
                     </div>
+                    <div class="col-3">
+                        <label for="date-range-end-date">Enter per/h wage</label>
+                        <input type="number" pattern="[0-9]+([,\.][0-9]+)?" 
+                         formnovalidate name="rate" id="rate" value="10"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-3">
+                        <label for="date-range-end-date">No# hours per day</label>
+                        <input type="number" pattern="[0-9]+([,\.][0-9]+)?" 
+                         formnovalidate name="hoursPerDay" id="hoursPerDay" value="8"
+                            class="form-control">
+                    </div>
+
                 </div>
 
                 <div class="text-center">
