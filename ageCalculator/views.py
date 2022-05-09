@@ -203,30 +203,30 @@ def weekDays(request):
 def workDays(request):
     context = {}
     if request.method == "POST":
-        sdate = request.POST['sdate']
-        edate = request.POST['edate']
-        date_start_val = sdate
-        date_end_val = edate  # end date (inclusive)
+        date_start_val = request.POST['sdate']
+        date_end_val = request.POST['edate']  # end date (inclusive)
 
-        date_start = datetime.strptime(date_start_val, '%Y-%m-%d').date()
-        date_end = datetime.strptime(date_end_val, '%Y-%m-%d').date()
+        date_start_stripped = datetime.strptime(
+            date_start_val, '%Y-%m-%d').date()
+        date_end_stripped = datetime.strptime(date_end_val, '%Y-%m-%d').date()
 
         days = {'mon': 0, 'tue': 1, 'wed': 2,
                 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 6}
 
-        total_days = (date_end - date_start).days + 1
+        total_days = (date_end_stripped - date_start_stripped).days + 1
 
-        first_weekday = date_start.weekday()
-        target_weekday = days['tue']
+        first_weekday = date_start_stripped.weekday()
+        last_weekday = date_end_stripped.weekday()
 
-        if target_weekday == first_weekday:
+        if last_weekday == first_weekday:
             days_before = 0
-        elif target_weekday < first_weekday:
-            days_before = 7 - first_weekday + target_weekday
+        elif last_weekday < first_weekday:
+            days_before = 7 - first_weekday + last_weekday
         else:
-            days_before = target_weekday - first_weekday
+            days_before = last_weekday - first_weekday
 
         weekday_count = total_days - days_before
+
         if weekday_count > 0:
             weekday_count = weekday_count/7 + (weekday_count % 7 and 1 or 0)
         else:
@@ -234,9 +234,9 @@ def workDays(request):
 
         day_count = total_days - weekday_count
         print(day_count)
-        age = int(day_count)
+        result_string = int(day_count)
         context = {
-            "age": age
+            "age": result_string
         }
     return render(request, 'workDays.html', context)
 
@@ -244,55 +244,69 @@ def workDays(request):
 def calculateWages(request):
     context = {}
     if request.method == "POST":
-        date_of_birth = request.POST['sdate']
-        edate = request.POST['edate']
+        start_date = request.POST['sdate']
+        end_date = request.POST['edate']
         rate = float(request.POST['rate'])
         hoursPerDay = float(request.POST['hoursPerDay'])
 
-        def Calc(date_of_birth, edate):
-            born_date = date_of_birth
-            born = datetime.strptime(born_date, '%Y-%m-%d')
-            today = edate
-            today = datetime.strptime(today, '%Y-%m-%d')
-            curr_month = today.month
-            born_month = born.month
-            curr_day = today.day
-            born_day = born.day
-            if born_month > curr_month:
-                month_diff = born_month - curr_month
+        def CalculateWages(start_month, end_date):
+            start_date = datetime.strptime(start_month, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date, '%Y-%m-%d')
+
+            current_month = end_date.month
+            current_day = end_date.day
+
+            start_month = start_date.month
+            start_day = start_date.day
+
+            if start_month > current_month:
+                month_diff = start_month - current_month
             else:
-                month_diff = curr_month - born_month
-            if born_day > curr_day:
-                day_diff = born_day - curr_day
+                month_diff = current_month - start_month
+            if start_day > current_day:
+                day_diff = start_day - current_day
             else:
-                day_diff = curr_day - born_day
-            age = today.year - born.year
-            print(str(age))
-            print(month_diff)
-            print(str(day_diff))
+                day_diff = current_day - start_day
+
+            year_diff = end_date.year - start_date.year
+
+            # printing the results on console for testing
+            print("Year: " + str(year_diff))
+            print(type(year_diff))
+            print("Month: " + str(month_diff))
+            print(type(month_diff))
+            print("Day: " + str(day_diff))
+            print(type(day_diff))
             # return " Your Age  : " + str(age) +"  Years   " + str(month_diff) +  "  Months  and " + str(day_diff) + "  Days"
 
-            years = float(str(age))
+            years = float(str(year_diff))
             int(years)
             months = float(str(month_diff))
             int(months)
             days = float(str(day_diff))
             int(days)
+
             if(years > 0):
-                ydays = 365*years
+                years_to_days = 365*years
             else:
-                ydays = 0
+                years_to_days = 0
             if(months > 0):
-                mdays = 30*months
+                months_to_days = 30*months
             else:
-                mdays = 0
-            age = ydays+mdays+days
-            hours = rate*(hoursPerDay*age)
-            return hours
-        age = (Calc(date_of_birth, edate))
+                months_to_days = 0
+
+            year_diff = years_to_days+months_to_days+days
+
+            total_wage_string = "You have worked " + str(hoursPerDay) + " hours per day " + str(
+                year_diff) + " days @" + str(rate) + "per/hour totalling and " + str(rate*(hoursPerDay*year_diff))
+            return total_wage_string
+
+        total_wage_result = (CalculateWages(start_date, end_date))
+
         context = {
-            "age": age
+            "age": total_wage_result
         }
-        working_days = np.busday_count('2022-03-01', '2022-03-18')
-        print(working_days)
+
+        # working_days = np.busday_count('2022-03-01', '2022-03-18')
+        # print(working_days)
     return render(request, 'calculateWages.html', context)
