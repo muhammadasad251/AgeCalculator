@@ -48,33 +48,26 @@ def index(request):
             # printing the message and remark based on the age
             age_string = ""
             if year_diff == 0 and month_diff == 0 and day_diff >= 1:
-                print("C1")
                 age_string = "You are only " + str(day_diff) + " days old!"
             elif year_diff == 0 and month_diff >= 1 and day_diff == 0:
-                print("Ca")
                 age_string = "You are exactly " + \
                     str(month_diff) + " month(s) old!"
             elif year_diff == 0 and month_diff >= 1:
-                print("C3")
                 age_string = "You are only " + \
                     str(month_diff) + " months and " + \
                     str(day_diff) + " days old!"
             elif year_diff >= 1 and month_diff == 0 and day_diff == 0:
-                print("C4")
                 age_string = "You are exactly " + \
                     str(year_diff) + " year(s) old!"
             elif year_diff >= 1 and month_diff >= 1 and day_diff == 0:
-                print("C4")
                 age_string = "You are exactly " + \
                     str(year_diff) + " year(s) old and " + \
                     str(month_diff) + " month(s) old!"
             elif year_diff >= 1 and month_diff >= 1 and day_diff == 0:
-                print("C5")
                 age_string = "You are exactly " + \
                     str(year_diff) + " years and " + \
                     str(month_diff) + " months old!"
             else:
-                print("C6")
                 age_string = "You are " + \
                     str(year_diff) + " years and " + \
                     str(month_diff) + " months and " + \
@@ -111,37 +104,81 @@ def index(request):
 def rangeCalculator(request):
     context = {}
     if request.method == "POST":
-        date_of_birth = request.POST['sdate']
-        edate = request.POST['edate']
+        start_date_from_user = request.POST['sdate']
+        end_date_from_user = request.POST['edate']
 
-        def Calc(date_of_birth, edate):
-            born_date = date_of_birth
-            born = datetime.strptime(born_date, '%Y-%m-%d')
-            today = edate
-            today = datetime.strptime(today, '%Y-%m-%d')
-            curr_month = today.month
-            born_month = born.month
-            curr_day = today.day
-            born_day = born.day
-            if born_month > curr_month:
-                month_diff = born_month - curr_month
+        def CalculateDateRange(start_date, end_date):
+            # breaking down the start date
+            start_date_without_time = datetime.strptime(start_date, '%Y-%m-%d')
+            start_month = start_date_without_time.month
+            start_day = start_date_without_time.day
+
+            # breakind down the end date
+            end_date = datetime.strptime(end_date, '%Y-%m-%d')
+            current_month = end_date.month
+            current_day = end_date.day
+
+            if start_month > current_month:
+                month_diff = start_month - current_month
             else:
-                month_diff = curr_month - born_month
-            if born_day > curr_day:
-                day_diff = born_day - curr_day
+                month_diff = current_month - start_month
+            if start_day > current_day:
+                day_diff = start_day - current_day
             else:
-                day_diff = curr_day - born_day
-            age = today.year - born.year
-            print(str(age))
-            print(month_diff)
-            print(str(day_diff))
-            return " Your Age  : " + str(age) + "  Years   " + str(month_diff) + "  Months  and " + str(day_diff) + "  Days"
-        age = (Calc(date_of_birth, edate))
+                day_diff = current_day - start_day
+
+            year_diff = end_date.year - start_date_without_time.year
+
+            # printing the results on console for testing
+            print("Year: " + str(year_diff))
+            print(type(year_diff))
+            print("Month: " + str(month_diff))
+            print(type(month_diff))
+            print("Day: " + str(day_diff))
+            print(type(day_diff))
+
+            # printing the message and remark based on the age
+            range_string = ""
+            if year_diff == 0 and month_diff == 0 and day_diff >= 1:
+                range_string = "The date range is only " + \
+                    str(day_diff) + " days."
+            elif year_diff == 0 and month_diff >= 1 and day_diff == 0:
+                range_string = "The date range is exactly " + \
+                    str(month_diff) + " month(s)."
+            elif year_diff == 0 and month_diff >= 1:
+                range_string = "The date range is only " + \
+                    str(month_diff) + " months and " + \
+                    str(day_diff) + " days."
+            elif year_diff >= 1 and month_diff == 0 and day_diff == 0:
+                range_string = "The date range is exactly " + \
+                    str(year_diff) + " year(s)."
+            elif year_diff >= 1 and month_diff >= 1 and day_diff == 0:
+                range_string = "The date range is exactly " + \
+                    str(year_diff) + " year(s) old and " + \
+                    str(month_diff) + " month(s)."
+            elif year_diff >= 1 and month_diff >= 1 and day_diff == 0:
+                range_string = "The date range is exactly " + \
+                    str(year_diff) + " years and " + \
+                    str(month_diff) + " months."
+            else:
+                range_string = "The date range is " + \
+                    str(year_diff) + " year(s) and " + \
+                    str(month_diff) + " month(s) and " + \
+                    str(day_diff) + " day(s)."
+
+            return range_string
+
+        range_message = (CalculateDateRange(
+            start_date_from_user, end_date_from_user))
+
         context = {
-            "age": age
+            "age": range_message
         }
-        working_days = np.busday_count('2022-03-01', '2022-03-18')
-        print(working_days)
+
+        # working_days = np.busday_count('2022-03-01', '2022-03-18')
+        working_days = np.busday_count(
+            start_date_from_user, end_date_from_user)
+        print("Working days: ", working_days)
     return render(request, 'rangeCalculator.html', context)
 
 
