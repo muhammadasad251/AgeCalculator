@@ -185,19 +185,17 @@ def rangeCalculator(request):
 def weekDays(request):
     context = {}
     if request.method == "POST":
-        date_of_birth = request.POST['sdate']
-        edate = request.POST['edate']
+        start_date = request.POST['sdate']
+        end_date = request.POST['edate']
 
-        def Calc(date_of_birth, edate):
-            born_date = date_of_birth
-            born = datetime.strptime(born_date, '%Y-%m-%d')
-            today = edate
-            today = datetime.strptime(today, '%Y-%m-%d')
-            days = working_days = np.busday_count(date_of_birth, edate)
-            return "Week days are  : " + str(days) + "  Days"
-        age = (Calc(date_of_birth, edate))
+        def CalculateWeekdays(start_date, end_date):
+            days = np.busday_count(start_date, end_date)
+            return "Total weekdays are " + str(days) + " days"
+
+        total_weekdays = (CalculateWeekdays(start_date, end_date))
+
         context = {
-            "age": age
+            "age": total_weekdays
         }
     return render(request, 'weekDays.html', context)
 
