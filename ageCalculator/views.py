@@ -201,44 +201,43 @@ def weekDays(request):
 
 
 def workDays(request):
-    context = {}
-    if request.method == "POST":
-        date_start_val = request.POST['sdate']
-        date_end_val = request.POST['edate']  # end date (inclusive)
+    context={}
+    if request.method =="POST":
+        sdate=request.POST['sdate']
+        edate=request.POST['edate']
+        date_start_val = sdate
+        date_end_val = edate  # end date (inclusive)
 
-        date_start_stripped = datetime.strptime(
-            date_start_val, '%Y-%m-%d').date()
-        date_end_stripped = datetime.strptime(date_end_val, '%Y-%m-%d').date()
+        date_start = datetime.strptime(date_start_val,'%Y-%m-%d').date()
+        date_end = datetime.strptime(date_end_val,'%Y-%m-%d').date()
 
-        days = {'mon': 0, 'tue': 1, 'wed': 2,
-                'thu': 3, 'fri': 4, 'sat': 5, 'sun': 6}
+        days = {'mon':0,'tue':1,'wed':2,'thu':3,'fri':4,'sat':5,'sun':6}
 
-        total_days = (date_end_stripped - date_start_stripped).days + 1
+        total_days = (date_end - date_start).days + 1 
 
-        first_weekday = date_start_stripped.weekday()
-        last_weekday = date_end_stripped.weekday()
+        first_weekday = date_start.weekday()
+        target_weekday = days['tue']   
 
-        if last_weekday == first_weekday:
+        if target_weekday == first_weekday:
             days_before = 0
-        elif last_weekday < first_weekday:
-            days_before = 7 - first_weekday + last_weekday
+        elif target_weekday < first_weekday:
+            days_before = 7 - first_weekday + target_weekday
         else:
-            days_before = last_weekday - first_weekday
-
+            days_before = target_weekday - first_weekday
+        
         weekday_count = total_days - days_before
-
         if weekday_count > 0:
-            weekday_count = weekday_count/7 + (weekday_count % 7 and 1 or 0)
+            weekday_count = weekday_count/7 + (weekday_count%7 and 1 or 0)
         else:
             weekday_count = 0
 
         day_count = total_days - weekday_count
         print(day_count)
-        result_string = int(day_count)
+        age=int(day_count)
         context = {
-            "age": result_string
+            "age":age
         }
-    return render(request, 'workDays.html', context)
+    return render(request, 'workDays.html',context)
 
 
 def calculateWages(request):
