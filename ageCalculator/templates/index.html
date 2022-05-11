@@ -9,7 +9,7 @@
             <form method="post" class="mt-4">
                 {% csrf_token %}
                 <label for="birth_date">Select your date of Birth...</label>
-                <input placeholder="Select date" type="date" name="date"
+                <input placeholder="Select date" required type="date" name="date"
                     id="birth_date" class="form-control">
                 <i class="fas fa-calendar input-prefix" tabindex=0></i>
 
@@ -22,7 +22,7 @@
             <!-- END input form -->
 
             <!-- START result container -->
-            <div id="age_container" class="p-4 bg-warning text-dark">
+            <div id="age_container" class="p-4 text-dark">
                 <p id="exact_age" class="display-6 text-center">{{age}}</p>
             </div>
             <!-- END result container -->

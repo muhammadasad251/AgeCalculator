@@ -3,6 +3,7 @@ from datetime import date, datetime
 import numpy as np
 
 # Create your views here.
+#Calculate age from birthday
 def index(request):
     context={}
     if request.method =="POST":
@@ -35,7 +36,7 @@ def index(request):
     return render(request, 'index.html',context)
 
 
-
+#Calculating the Range
 def rangeCalculator(request):
     context={}
     if request.method =="POST":
@@ -62,7 +63,7 @@ def rangeCalculator(request):
             print(str(age))
             print(month_diff)
             print(str(day_diff))
-            return " Your Age  : " + str(age) +"  Years   " + str(month_diff) +  "  Months  and " + str(day_diff) + "  Days"
+            return " Range is  : " + str(age) +"  Years   " + str(month_diff) +  "  Months  and " + str(day_diff) + "  Days"
         age=(Calc(date_of_birth,edate))
         context = {
             "age":age
@@ -70,7 +71,7 @@ def rangeCalculator(request):
         working_days=np.busday_count('2022-03-01', '2022-03-18')
         print(working_days)
     return render(request, 'rangeCalculator.html',context)
-
+#Calculating Weekdays
 def weekDays(request):
     context={}
     if request.method =="POST":
@@ -89,7 +90,7 @@ def weekDays(request):
         }
     return render(request, 'weekDays.html',context)
 
-
+#Calculating workdays by skipping specific days like here we are skipping tuesday.
 def workDays(request):
     context={}
     if request.method =="POST":
@@ -128,7 +129,7 @@ def workDays(request):
             "age":age
         }
     return render(request, 'workDays.html',context)
-
+#Calculating wages by given numbers of hours and pa rate.
 def calculateWages(request):
     context={}
     if request.method =="POST":
