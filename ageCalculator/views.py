@@ -51,6 +51,7 @@ def rangeCalculator(request):
             born_month = born.month
             curr_day   = today.day
             born_day   = born.day
+            #Getting umber of months and days from given number of range. Same like wage calcyion function
             if born_month > curr_month:
                 month_diff = born_month - curr_month
             else :
@@ -82,6 +83,7 @@ def weekDays(request):
             born = datetime.strptime(born_date, '%Y-%m-%d')
             today = edate
             today=datetime.strptime(today, '%Y-%m-%d')
+            #Numpy function is used to get week days from given number of ragge
             days=working_days=np.busday_count(date_of_birth, edate)
             return "Week days are  : " +str(days) + "  Days"
         age=(Calc(date_of_birth,edate))
@@ -107,6 +109,7 @@ def workDays(request):
         total_days = (date_end - date_start).days + 1 
 
         first_weekday = date_start.weekday()
+        #Tuesday is off
         target_weekday = days['tue']   
 
         if target_weekday == first_weekday:
@@ -147,6 +150,7 @@ def calculateWages(request):
             born_month = born.month
             curr_day   = today.day
             born_day   = born.day
+            #Calculating Months and Days from Given range
             if born_month > curr_month:
                 month_diff = born_month - curr_month
             else :
@@ -161,6 +165,7 @@ def calculateWages(request):
             print(str(day_diff))
             #return " Your Age  : " + str(age) +"  Years   " + str(month_diff) +  "  Months  and " + str(day_diff) + "  Days"
             
+            #Getting number of years, Months and days
             years=float(str(age))
             int(years)
             months=float(str(month_diff))
