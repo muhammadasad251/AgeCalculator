@@ -195,3 +195,7 @@ def calculateWages(request):
         print(working_days)
     return render(request, 'calculateWages.html',context)
 
+def appointment(request):
+    context={}
+    return render(request, 'appointment.html',context)
+
